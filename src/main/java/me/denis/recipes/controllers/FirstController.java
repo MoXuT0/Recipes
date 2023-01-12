@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class FirstCon {
+public class FirstController {
 
     @GetMapping
     public String helloWorld() {
@@ -16,7 +16,7 @@ public class FirstCon {
         return "Ученик - Денис. " +
                 "Веб-приложение рецептов. " +
                 "Дата создания 29.12.2022. " +
-                "Просто приложение для сайта рецептов.";
+                "Простое приложение для сайта рецептов.";
     }
 
 }

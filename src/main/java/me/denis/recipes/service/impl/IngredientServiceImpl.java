@@ -19,21 +19,8 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Ingredient delete(Integer id) {
-        return ingredients.remove(id);
-    }
-
-    @Override
     public Ingredient get(Integer id) {
         return ingredients.get(id);
-    }
-
-    @Override
-    public Ingredient edit(Integer id, Ingredient ingredient) {
-        if (!ingredients.containsKey(id)) {
-            throw new RuntimeException("Ингредиент не найден");
-        } else
-            return ingredients.put(id, ingredient);
     }
 
 }
