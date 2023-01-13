@@ -34,9 +34,9 @@ public class RecipeController {
                     @Content(mediaType = "application/json")
             }),
     })
-    public ResponseEntity<Recipe> addRecipe(@RequestBody Recipe recipe) {
+    public ResponseEntity<?> addRecipe(@RequestBody Recipe recipe) {
         if (StringUtils.isBlank(recipe.getTitle()) || StringUtils.isEmpty(recipe.getTitle())) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("Название рецепта не заполнено");
         }
         return ResponseEntity.ok(recipeService.add(recipe));
     }
@@ -79,7 +79,10 @@ public class RecipeController {
             }),
             @ApiResponse(responseCode = "404", description = "Рецепт не найден"),
     })
-    public ResponseEntity<Recipe> editRecipe(@PathVariable("id") Integer id, @RequestBody Recipe recipe) {
+    public ResponseEntity<?> editRecipe(@PathVariable("id") Integer id, @RequestBody Recipe recipe) {
+        if (StringUtils.isBlank(recipe.getTitle()) || StringUtils.isEmpty(recipe.getTitle())) {
+            return ResponseEntity.badRequest().body("Название рецепта не заполнено");
+        }
         return ResponseEntity.ok(recipeService.edit(id, recipe));
     }
 

@@ -34,9 +34,9 @@ public class IngredientController {
                     @Content(mediaType = "application/json")
             }),
     })
-    public ResponseEntity<Ingredient> addIngredient(@RequestBody Ingredient ingredient) {
+    public ResponseEntity<?> addIngredient(@RequestBody Ingredient ingredient) {
         if (StringUtils.isBlank(ingredient.getTitle()) || StringUtils.isEmpty(ingredient.getTitle())) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("Название не заполено");
         }
         return ResponseEntity.ok(ingredientService.add(ingredient));
     }
@@ -79,7 +79,10 @@ public class IngredientController {
             }),
             @ApiResponse(responseCode = "404", description = "Ингредиент не найден"),
     })
-    public ResponseEntity<Ingredient> editIngredient(@PathVariable("id") Integer id, @RequestBody Ingredient ingredient) {
+    public ResponseEntity<?> editIngredient(@PathVariable("id") Integer id, @RequestBody Ingredient ingredient) {
+        if (StringUtils.isBlank(ingredient.getTitle()) || StringUtils.isEmpty(ingredient.getTitle())) {
+            return ResponseEntity.badRequest().body("Название индгредиента не заполено");
+        }
         return ResponseEntity.ok(ingredientService.edit(id, ingredient));
     }
 
