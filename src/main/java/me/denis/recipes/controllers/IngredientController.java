@@ -1,12 +1,15 @@
 package me.denis.recipes.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import me.denis.recipes.model.Ingredient;
 import me.denis.recipes.service.IngredientService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Tag(name = "Ингредиенты", description = "операции для работы с ингредиентами")
 @RequestMapping("/ingredient")
 public class IngredientController {
 
@@ -17,28 +20,28 @@ public class IngredientController {
     }
 
     @PostMapping
-    public Ingredient addIngredient(@RequestBody Ingredient ingredient) {
-        return ingredientService.add(ingredient);
+    public ResponseEntity<Ingredient> addIngredient(@RequestBody Ingredient ingredient) {
+        return ResponseEntity.ok(ingredientService.add(ingredient));
     }
 
     @GetMapping("/{id}")
-    public Ingredient getIngredient(@PathVariable("id") Integer id) {
-        return ingredientService.get(id);
+    public ResponseEntity<Ingredient> getIngredient(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(ingredientService.get(id));
     }
 
     @DeleteMapping("/{id}")
-    public Ingredient deleteIngredient(@PathVariable("id") Integer id) {
-        return ingredientService.delete(id);
+    public ResponseEntity<Ingredient> deleteIngredient(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(ingredientService.delete(id));
     }
 
     @PutMapping("/{id}")
-    public Ingredient editIngredient(@PathVariable("id") Integer id, @RequestBody Ingredient ingredient) {
-        return ingredientService.edit(id, ingredient);
+    public ResponseEntity<Ingredient> editIngredient(@PathVariable("id") Integer id, @RequestBody Ingredient ingredient) {
+        return ResponseEntity.ok(ingredientService.edit(id, ingredient));
     }
 
     @GetMapping
-    public List<Ingredient> getAll() {
-        return this.ingredientService.getAll();
+    public ResponseEntity<List<Ingredient>> getAll() {
+        return ResponseEntity.ok(ingredientService.getAll());
     }
 
 }
