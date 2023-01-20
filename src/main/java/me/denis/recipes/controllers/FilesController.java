@@ -51,7 +51,7 @@ public class FilesController {
         }
     }
 
-    @PostMapping(value = "/recipe/upload", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/recipe/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Загрузить файл с рецептами")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Файл загружен")
@@ -68,7 +68,7 @@ public class FilesController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @PostMapping(value = "/ingredient/upload", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/ingredient/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Загрузить файл с ингредиентами")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Файл загружен")
