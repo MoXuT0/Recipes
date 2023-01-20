@@ -3,6 +3,7 @@ package me.denis.recipes.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import me.denis.recipes.service.FilesService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 @RestController
+@Tag(name = "Файлы", description = "Операции для работы с файлами")
 public class FilesController {
 
     private final FilesService filesServiceIngredient;
