@@ -33,6 +33,8 @@ public class IngredientController {
             @ApiResponse(responseCode = "200", description = "Ингредиент добавлен", content = {
                     @Content(mediaType = "application/json")
             }),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<?> addIngredient(@RequestBody Ingredient ingredient) {
         if (StringUtils.isBlank(ingredient.getTitle()) || StringUtils.isEmpty(ingredient.getTitle())) {
@@ -47,7 +49,9 @@ public class IngredientController {
             @ApiResponse(responseCode = "200", description = "Ингредиент найден", content = {
                     @Content(mediaType = "application/json")
             }),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
             @ApiResponse(responseCode = "404", description = "Ингредиент не найден"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<Ingredient> getIngredient(@PathVariable("id") Integer id) {
         Ingredient ingredient = ingredientService.get(id);
@@ -61,7 +65,9 @@ public class IngredientController {
     @Operation(summary = "Удаление ингредиента", description = "Удаление ингредиента по id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ингредиент удален"),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
             @ApiResponse(responseCode = "404", description = "Ингредиент не найден"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<Ingredient> deleteIngredient(@PathVariable("id") Integer id) {
         Ingredient ingredient = ingredientService.delete(id);
@@ -77,7 +83,9 @@ public class IngredientController {
             @ApiResponse(responseCode = "200", description = "Ингредиент отредактирован", content = {
                     @Content(mediaType = "application/json")
             }),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
             @ApiResponse(responseCode = "404", description = "Ингредиент не найден"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<?> editIngredient(@PathVariable("id") Integer id, @RequestBody Ingredient ingredient) {
         if (StringUtils.isBlank(ingredient.getTitle()) || StringUtils.isEmpty(ingredient.getTitle())) {
@@ -92,7 +100,10 @@ public class IngredientController {
             @ApiResponse(responseCode = "200", description = "Ингредиенты найдены", content = {
                     @Content(mediaType = "application/json",
                     array = @ArraySchema(schema = @Schema(implementation = Ingredient.class)))
-            })
+            }),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
+            @ApiResponse(responseCode = "404", description = "Ингредиенты не найдены"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<List<Ingredient>> getAll() {
         return ResponseEntity.ok(ingredientService.getAll());

@@ -41,7 +41,10 @@ public class FilesController {
     @GetMapping(value = "/recipe/download")
     @Operation(summary = "Скачать все рецепты в виде json-файла")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Файл скачан")
+            @ApiResponse(responseCode = "200", description = "Файл с рецептами скачан"),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
+            @ApiResponse(responseCode = "404", description = "Рецепты не найдены"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<InputStreamResource> downloadRecipeFile() throws FileNotFoundException {
         File file = filesServiceRecipe.getFile();
@@ -60,7 +63,10 @@ public class FilesController {
     @GetMapping("/recipe/download/txt")
     @Operation(summary = "Скачать рецепты в виде txt-файла")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Файл скачан"),
+            @ApiResponse(responseCode = "200", description = "Файл с рецептами скачан"),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
+            @ApiResponse(responseCode = "404", description = "Рецепты не найдены"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<InputStreamResource> downloadRecipeFileTxt(){
         File downloadedFile = recipeService.createTxtFile();
@@ -79,7 +85,9 @@ public class FilesController {
     @PostMapping(value = "/recipe/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Загрузить файл с рецептами")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Файл загружен")
+            @ApiResponse(responseCode = "200", description = "Файл с рецептами загружен"),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<Void> uploadRecipeFile(@RequestParam MultipartFile multipartFile) {
         filesServiceRecipe.cleanFile();
@@ -96,7 +104,9 @@ public class FilesController {
     @PostMapping(value = "/ingredient/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Загрузить файл с ингредиентами")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Файл загружен")
+            @ApiResponse(responseCode = "200", description = "Файл с ингредиентами загружен"),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<Void> uploadIngredientFile(@RequestParam MultipartFile multipartFile) {
         filesServiceIngredient.cleanFile();
