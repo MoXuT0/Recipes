@@ -10,6 +10,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 @Service
@@ -32,7 +38,11 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe get(Integer id) {
-        return recipes.get(id);
+        if(!recipes.containsKey(id)) {
+            throw new RuntimeException("Рецепт не найден");
+        } else {
+            return recipes.get(id);
+        }
     }
 
     @Override
@@ -66,7 +76,7 @@ public class RecipeServiceImpl implements RecipeService {
             String json = new ObjectMapper().writeValueAsString(recipes);
             filesService.saveToFile(json);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -76,8 +86,40 @@ public class RecipeServiceImpl implements RecipeService {
             recipes = new ObjectMapper().readValue(json, new TypeReference<LinkedHashMap<Integer, Recipe>>() {
             });
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+    }
+
+    @Override
+    public File createTxtFile() {
+        Path path = filesService.createTempFile("recipes");
+        try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)){
+            for (Recipe recipe : recipes.values()) {
+                writer.append(recipe.getTitle())
+                        .append("\n");
+                writer.append("Время приготовления: ")
+                        .append(String.valueOf(recipe.getCookingTime()))
+                        .append(" минут.")
+                        .append("\n");
+                writer.append("Ингредиенты:"+ "\n");
+                for (int i = 0; i < recipe.getIngredients().size(); i++) {
+                    writer.append(recipe.getIngredients().get(i).getTitle())
+                            .append(" - ")
+                            .append(String.valueOf(recipe.getIngredients().get(i).getAmount()))
+                            .append(" ").append(recipe.getIngredients().get(i).getMeasureUnit())
+                            .append("\n");
+                }
+                writer.append("Инструкция приготовления:"+ "\n");
+                for (int j = 0; j < recipe.getSteps().size(); j++) {
+                    writer.append(recipe.getSteps().get(j))
+                            .append("\n");
+                }
+                writer.append("----------------------------------------------------" + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return path.toFile();
     }
 
 }

@@ -55,4 +55,14 @@ public class FilesServiceIngredientImpl implements FilesService {
     public File getFile() {
         return new File(ingredientFilePath + "/" + ingredientFileName);
     }
+
+    @Override
+    public Path createTempFile(String suffix) {
+        try {
+            return Files.createTempFile(Path.of(ingredientFilePath), "tempFile", suffix);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

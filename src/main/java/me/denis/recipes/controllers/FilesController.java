@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.denis.recipes.service.FilesService;
+import me.denis.recipes.service.RecipeService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
@@ -26,12 +27,15 @@ public class FilesController {
 
     private final FilesService filesServiceIngredient;
     private final FilesService filesServiceRecipe;
+    private final RecipeService recipeService;
 
 
     public FilesController(@Qualifier("filesServiceIngredientImpl") FilesService filesServiceIngredient,
-                           @Qualifier("filesServiceRecipeImpl") FilesService filesServiceRecipe) {
+                           @Qualifier("filesServiceRecipeImpl") FilesService filesServiceRecipe,
+                           RecipeService recipeService) {
         this.filesServiceIngredient = filesServiceIngredient;
         this.filesServiceRecipe = filesServiceRecipe;
+        this.recipeService = recipeService;
     }
 
     @GetMapping(value = "/recipe/download")
@@ -49,6 +53,25 @@ public class FilesController {
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipes.json\"")
                     .body(resource);
         } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping("/recipe/download/txt")
+    @Operation(summary = "Скачать рецепты в виде txt-файла")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Файл скачан"),
+    })
+    public ResponseEntity<InputStreamResource> downloadRecipeFileTxt(){
+        File downloadedFile = recipeService.createTxtFile();
+        try {
+            InputStreamResource stream = new InputStreamResource(new FileInputStream(downloadedFile));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .contentLength(downloadedFile.length())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipes.txt\"")
+                    .body(stream);
+        } catch (IOException e) {
             return ResponseEntity.noContent().build();
         }
     }

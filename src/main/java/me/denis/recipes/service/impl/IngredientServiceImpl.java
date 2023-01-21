@@ -32,7 +32,11 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient get(Integer id) {
-        return ingredients.get(id);
+        if (!ingredients.containsKey(id)) {
+            throw new RuntimeException("Ингредиент не найден");
+        } else {
+            return ingredients.get(id);
+        }
     }
 
     @Override
@@ -66,7 +70,7 @@ public class IngredientServiceImpl implements IngredientService {
             String json = new ObjectMapper().writeValueAsString(ingredients);
             filesService.saveToFile(json);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -76,7 +80,7 @@ public class IngredientServiceImpl implements IngredientService {
             ingredients = new ObjectMapper().readValue(json, new TypeReference<LinkedHashMap<Integer, Ingredient>>() {
             });
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 

@@ -2,6 +2,7 @@ package me.denis.recipes.service;
 
 import me.denis.recipes.model.Recipe;
 
+import java.io.File;
 import java.util.List;
 
 public interface RecipeService {
@@ -15,5 +16,7 @@ public interface RecipeService {
     Recipe edit(Integer id, Recipe recipe);
 
     List<Recipe> getAll();
+
+    File createTxtFile();
 
 }
