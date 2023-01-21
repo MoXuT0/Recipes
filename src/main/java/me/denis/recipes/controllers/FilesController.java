@@ -69,12 +69,12 @@ public class FilesController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<InputStreamResource> downloadRecipeFileTxt(){
-        File downloadedFile = recipeService.createTxtFile();
+        File file = recipeService.createTxtFile();
         try {
-            InputStreamResource stream = new InputStreamResource(new FileInputStream(downloadedFile));
+            InputStreamResource stream = new InputStreamResource(new FileInputStream(file));
             return ResponseEntity.ok()
                     .contentType(MediaType.TEXT_PLAIN)
-                    .contentLength(downloadedFile.length())
+                    .contentLength(file.length())
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipes.txt\"")
                     .body(stream);
         } catch (IOException e) {
