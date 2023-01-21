@@ -14,6 +14,7 @@ import java.util.*;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {
+
     private static Integer id = 1;
     private Map<Integer, Ingredient> ingredients = new LinkedHashMap<>();
     private final FilesService filesService;

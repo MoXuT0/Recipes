@@ -4,6 +4,7 @@ import me.denis.recipes.service.FilesService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,7 +38,8 @@ public class FilesServiceIngredientImpl implements FilesService {
         }
     }
 
-    private boolean cleanFile() {
+    @Override
+    public boolean cleanFile() {
         try {
             Path path = Path.of(ingredientFilePath, ingredientFileName);
             Files.deleteIfExists(path);
@@ -49,4 +51,8 @@ public class FilesServiceIngredientImpl implements FilesService {
         }
     }
 
+    @Override
+    public File getFile() {
+        return new File(ingredientFilePath + "/" + ingredientFileName);
+    }
 }
