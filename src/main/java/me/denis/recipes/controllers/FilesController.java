@@ -68,16 +68,16 @@ public class FilesController {
             @ApiResponse(responseCode = "404", description = "Рецепты не найдены"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
-    public ResponseEntity<InputStreamResource> downloadRecipeFileTxt(){
+    public ResponseEntity<InputStreamResource> downloadRecipeFileTxt() throws FileNotFoundException {
         File file = recipeService.createTxtFile();
-        try {
+        if (file.exists()) {
             InputStreamResource stream = new InputStreamResource(new FileInputStream(file));
             return ResponseEntity.ok()
                     .contentType(MediaType.TEXT_PLAIN)
                     .contentLength(file.length())
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipes.txt\"")
                     .body(stream);
-        } catch (IOException e) {
+        } else {
             return ResponseEntity.noContent().build();
         }
     }
