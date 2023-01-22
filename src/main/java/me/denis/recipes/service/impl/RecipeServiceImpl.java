@@ -96,25 +96,28 @@ public class RecipeServiceImpl implements RecipeService {
         try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)){
             for (Recipe recipe : recipes.values()) {
                 writer.append(recipe.getTitle())
-                        .append("\n");
+                        .append(System.lineSeparator());
                 writer.append("Время приготовления: ")
                         .append(String.valueOf(recipe.getCookingTime()))
                         .append(" минут.")
-                        .append("\n");
-                writer.append("Ингредиенты:"+ "\n");
+                        .append(System.lineSeparator());
+                writer.append("Ингредиенты:")
+                        .append(System.lineSeparator());
                 for (int i = 0; i < recipe.getIngredients().size(); i++) {
                     writer.append(recipe.getIngredients().get(i).getTitle())
                             .append(" - ")
                             .append(String.valueOf(recipe.getIngredients().get(i).getAmount()))
                             .append(" ").append(recipe.getIngredients().get(i).getMeasureUnit())
-                            .append("\n");
+                            .append(System.lineSeparator());
                 }
-                writer.append("Инструкция приготовления:"+ "\n");
+                writer.append("Инструкция приготовления:")
+                        .append(System.lineSeparator());
                 for (int j = 0; j < recipe.getSteps().size(); j++) {
                     writer.append(recipe.getSteps().get(j))
-                            .append("\n");
+                            .append(System.lineSeparator());
                 }
-                writer.append("----------------------------------------------------" + "\n");
+                writer.append("----------------------------------------------------")
+                        .append(System.lineSeparator());
             }
         } catch (IOException e) {
             e.printStackTrace();
