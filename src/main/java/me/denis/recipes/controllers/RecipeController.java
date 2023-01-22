@@ -33,6 +33,8 @@ public class RecipeController {
             @ApiResponse(responseCode = "200", description = "Рецепт добавлен", content = {
                     @Content(mediaType = "application/json")
             }),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<?> addRecipe(@RequestBody Recipe recipe) {
         if (StringUtils.isBlank(recipe.getTitle()) || StringUtils.isEmpty(recipe.getTitle())) {
@@ -47,7 +49,9 @@ public class RecipeController {
             @ApiResponse(responseCode = "200", description = "Рецепт найден", content = {
                     @Content(mediaType = "application/json")
             }),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
             @ApiResponse(responseCode = "404", description = "Рецепт не найден"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<Recipe> getRecipe(@PathVariable("id") Integer id) {
         Recipe recipe = recipeService.get(id);
@@ -61,7 +65,9 @@ public class RecipeController {
     @Operation(summary = "Удаление рецепта", description = "Удаление рецепта по id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Рецепт удален"),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
             @ApiResponse(responseCode = "404", description = "Рецепт не найден"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<Recipe> deleteRecipe(@PathVariable("id") Integer id) {
         Recipe recipe = recipeService.delete(id);
@@ -77,7 +83,9 @@ public class RecipeController {
             @ApiResponse(responseCode = "200", description = "Рецепт отредактирован", content = {
                     @Content(mediaType = "application/json")
             }),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
             @ApiResponse(responseCode = "404", description = "Рецепт не найден"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<?> editRecipe(@PathVariable("id") Integer id, @RequestBody Recipe recipe) {
         if (StringUtils.isBlank(recipe.getTitle()) || StringUtils.isEmpty(recipe.getTitle())) {
@@ -92,7 +100,10 @@ public class RecipeController {
             @ApiResponse(responseCode = "200", description = "Рецепты найдены", content = {
                     @Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = Recipe.class)))
-            })
+            }),
+            @ApiResponse(responseCode = "400", description = "Ошибка в параметрах запроса"),
+            @ApiResponse(responseCode = "404", description = "Рецепты не найдены"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
     public ResponseEntity<List<Recipe>> getAllRecipes() {
         return ResponseEntity.ok(recipeService.getAll());
